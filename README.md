@@ -3,15 +3,19 @@ IntData
 
 IntData makes a backup of iOS devices and search in
 
-<<<<<<< HEAD
+
+<h2>Description : </h2>
+
+<h3>Run :</h3>
 <pre>
 <code>
 run intdata.rb
 </code>
 </pre>
-=======
-Run :
-
+<br />
+**Example :**
+<pre>
+<code>
 ruby intdata.rb DESTINATION_FOLDER
-
->>>>>>> FETCH_HEAD
+</code>
+</pre>
