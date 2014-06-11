@@ -187,73 +187,8 @@ def all_safari_history(path)
 
 end
 
-###################################
-############## SKYPE ##############
-###################################
-
-#######
-# CALLS
-def skype_calls(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Applications/com.skype.skype/Library/Application\ Support/Skype/snowplock/main.db"
-    db.results_as_hash = true
-    stm = db.execute "SELECT identity, dispname, languages, call_duration  FROM CallMembers"
-    rows = []
-    stm.each do |row|
-      rows << ["#{row['identity']}", "#{row['dispname']}", "#{row['languages']}", "#{row['call_duration']}"]
-    end
-    table_skype_calls = Terminal::Table.new :headings => ['Pseudo', 'Name', 'Languages', 'Call Duration'], :rows => rows
-    puts table_skype_calls
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-##########
-# MESSAGES
-def skype_messages(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Applications/com.skype.skype/Library/Application\ Support/Skype/snowplock/main.db"
-    db.results_as_hash = true
-    stm = db.execute "SELECT author, from_dispname, body_xml FROM Messages"
-    stm.each do |row|
-      puts "#{row['author']} (#{row['from_dispname']}) ==> #{row['body_xml']}\n\n"
-    end
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
 
 
-##########
-# CONTACTS
-def skype_contacts(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Applications/com.skype.skype/Library/Application\ Support/Skype/snowplock/main.db"
-    db.results_as_hash = true
-    stm = db.execute "SELECT skypename, fullname, country, province, city, emails, about FROM Contacts"
-    rows = []
-    stm.each do |row|
-      rows << ["#{row['skypename']}", "#{row['fullname']}", "#{row['country']}", "#{row['province']}", "#{row['city']}", "#{row['emails']}", "#{row['about']}"]
-    end
-    table_skype_contacts = Terminal::Table.new :headings => ['Skype name', 'Name', 'Country', 'Province', 'City', 'Emails', 'About'], :rows => rows
-    puts table_skype_contacts
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
 
 
 ####################################
@@ -298,36 +233,46 @@ end
 
 # Variables
 
+
+
 # Using libimobiledevice for create a backup of the device
+# If user choose "backup"
 if(ARGV[0] == "backup")
-  if(ARGV[1] == "-f")
-    if(ARGV[2])
-      folder = ARGV[2]
-    else
-      puts "You have to specify the destination folder with -f FOLDER"
-      exit(1)
-    end
+  if(ARGV[1])
+    folder = ARGV[1]
   else
     puts "You have to specify the destination folder with -f FOLDER"
     exit(1)
   end
-  system("mkdir Backup/"+String(folder))
-  if(!system("idevicebackup2 backup Backup/"+String(folder)))
+  # Folder creation
+  system("mkdir Backup/#{folder}")
+  if(!system("idevicebackup2 backup Backup/#{folder}"))
     exit(1)
   else
-    system("idevicebackup2 unback Backup/"+String(folder))
+    system("idevicebackup2 unback Backup/#{folder}")
+  end
+# If user want search into backup
+else
+  if(ARGV[0])
+    folder = ARGV[0]
+  else
+    puts "You have to specify the destination folder with -f FOLDER"
+    exit(1)
   end
 end
 
-pseudo_skype = ""
-path = "Backup/"+String(folder)
+
+folder = "Back"
+unback_folder = `ls Backup/#{folder}/_unback_/`.chomp
+path = "Backup/#{folder}/_unback_/#{unback_folder}/var/"
 command = ""
 
+puts path
 puts "Interresting Data !\n"
 
 while command != "quit"
   print "> "
-  command = gets.chomp
+  command = $stdin.gets.chomp
 
   if command == "help"
     puts "LIST OF COMMANDS :"
@@ -379,12 +324,6 @@ while command != "quit"
     all_safari_bookmarks(path)
   elsif command == "safari history"
     all_safari_history(path)
-  elsif command == "skype calls"
-    skype_calls(path)
-  elsif command == "skype messages"
-    skype_messages(path)
-  elsif command == "skype contacts"
-    skype_contacts(path)
   elsif command == "shazam artists"
     shazam_artists(path)
   else
