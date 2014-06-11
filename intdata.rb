@@ -300,11 +300,26 @@ end
 
 # Using libimobiledevice for create a backup of the device
 folder = ARGV[0]
+if(ARGV[0] == "-f")
+  if(ARGV[1].empty)
+    folder = ARGV[1]
+  else
+    puts "You have to specify the destination folder with -f FOLDER"
+    exit(1)
+  end
+else
+  puts "You have to specify the destination folder with -f FOLDER"
+  exit(1)
+end
 system("mkdir Backup/"+String(folder))
-system("idevicebackup2 backup Backup/"+String(folder))
-system("idevicebackup2 unback Backup/"+String(folder))
+if(!system("idevicebackup2 backup Backup/"+String(folder)))
+  exit(1)
+else
+  system("idevicebackup2 unback Backup/"+String(folder))
+end
 
 
+pseudo_skype = ""
 path = "Backup/"+String(folder)
 command = ""
 
