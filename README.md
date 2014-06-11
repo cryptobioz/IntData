@@ -22,20 +22,20 @@ If you have to make backup :
 Plug your device on computer with USB cable and run this command.<br />
 <pre>
   <code>
-    ruby intdata.rb backup -f DESTINATION_FOLDER
+    ruby intdata.rb backup DESTINATION_FOLDER
   </code>
 </pre>
 <br />
 If you want search into a folder :
 <pre>
 <code>
-ruby intdata.rb -f DESTINATION_FOLDER
+ruby intdata.rb DESTINATION_FOLDER
 </code>
 </pre>
 <br />
 <strong>Example :</strong>
 <pre>
 <code>
-ruby intdata.rb -f Backup_folder
+ruby intdata.rb Backup_folder
 </code>
 </pre>
