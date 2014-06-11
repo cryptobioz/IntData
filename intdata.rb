@@ -3,6 +3,8 @@
 require 'sqlite3'
 require 'terminal-table'
 require 'plist'
+load 'shazam.rb'
+
 ###########
 # ALL CALLS
 def all_calls(path)
@@ -191,32 +193,6 @@ end
 
 
 
-####################################
-############## SHAZAM ##############
-####################################
-
-
-#########
-# ARTISTS
-def shazam_artists(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Applications/com.shazam.Shazam/Documents/ShazamDataModel.sqlite"
-    db.results_as_hash = true
-    stm = db.execute "SELECT ZNAME FROM ZSHARTISTMO"
-    table_shazam_artists = Terminal::Table.new :headings => ['Artists'], :rows => stm
-    puts table_shazam_artists
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-
-
-
 
 ################################
 #
@@ -266,7 +242,6 @@ unback_folder = `ls Backup/#{folder}/_unback_/`.chomp
 path = "Backup/#{folder}/_unback_/#{unback_folder}/var/"
 command = ""
 
-puts path
 puts "Interresting Data !\n"
 
 while command != "quit"
