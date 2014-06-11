@@ -4,6 +4,8 @@ require 'sqlite3'
 require 'terminal-table'
 require 'plist'
 load 'plugins/shazam.rb'
+load 'plugins/skype.rb'
+load 'plugins/mumble.rb'
 
 ###########
 # ALL CALLS
@@ -237,7 +239,7 @@ else
   end
 end
 
-
+pseudo_skype = ""
 unback_folder = `ls Backup/#{folder}/_unback_/`.chomp
 path = "Backup/#{folder}/_unback_/#{unback_folder}/var/"
 command = ""
@@ -261,6 +263,11 @@ while command != "quit"
     puts "sms          => Show all sms"
     puts "notes        => Show all notes"
     puts "recordings   => Show all recordings"
+    puts ""
+    puts "-- SKYPE --"
+    puts "skype calls    => Show Skype calls"
+    puts "skype messages => Show Skype messages"
+    puts "skype contacts => Show SKype contacts"
     puts ""
     puts "-- SHAZAM --"
     puts "shazam artists => Show artists who was tagged"
@@ -298,6 +305,32 @@ while command != "quit"
     all_safari_bookmarks(path)
   elsif command == "safari history"
     all_safari_history(path)
+  # SKYPE
+  elsif command == "skype calls"
+    if pseudo_skype == ""
+      print "Enter a skype pseudo : "
+      pseudo_skype = $stdin.gets.chomp
+    end
+    skype_calls(path, pseudo_skype)
+
+  elsif command == "skype messages"
+    if pseudo_skype == ""
+      print "Enter a skype pseudo : "
+      pseudo_skype = $stdin.gets.chomp
+    end
+    skype_messages(path, pseudo_skype)
+
+  elsif command == "skype contacts"
+    if pseudo_skype == ""
+      print "Enter a skype pseudo : "
+      pseudo_skype = $stdin.gets.chomp
+    end
+    skype_contacts(path, pseudo_skype)
+
+  # MUMBLE
+  elsif command == "mumble favorites"
+    mumble_favorites(path)
+
   elsif command == "shazam artists"
     shazam_artists(path)
   else
