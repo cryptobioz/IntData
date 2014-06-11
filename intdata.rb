@@ -307,7 +307,7 @@ system("idevicebackup2 unback Backup/"+String(folder))
 
 path = "Backup/"+String(folder)
 command = ""
-exit(1)
+
 puts "Interresting Data !\n"
 
 while command != "quit"
