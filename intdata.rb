@@ -262,7 +262,6 @@ else
 end
 
 
-folder = "Back"
 unback_folder = `ls Backup/#{folder}/_unback_/`.chomp
 path = "Backup/#{folder}/_unback_/#{unback_folder}/var/"
 command = ""
