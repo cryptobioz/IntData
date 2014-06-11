@@ -18,6 +18,8 @@ It use the library, libimobiledevice for create de backup of iPhone, iPad or iPo
 <br />
 <h3>Run :</h3>
 If you have to make backup :
+<br />
+Plug your device on computer with USB cable and run this command.<br />
 <pre>
   <code>
     ruby intdata.rb backup -f DESTINATION_FOLDER
