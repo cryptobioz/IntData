@@ -13,16 +13,18 @@ IntData makes a backup of iOS devices and search in.<br />
   <li>libimobiledevice</li>
   <li>Ruby</li>
   <li>SQLite3</li>
+</ul>
+<br />
 <h3>Run :</h3>
 <pre>
 <code>
-run intdata.rb
+run intdata.rb -f DESTINATION_FOLDER
 </code>
 </pre>
 <br />
 <strong>Example :</strong>
 <pre>
 <code>
-ruby intdata.rb DESTINATION_FOLDER
+ruby intdata.rb -f Backup_folder
 </code>
 </pre>
