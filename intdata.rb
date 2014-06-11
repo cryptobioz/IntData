@@ -3,7 +3,7 @@
 require 'sqlite3'
 require 'terminal-table'
 require 'plist'
-load 'shazam.rb'
+load 'plugins/shazam.rb'
 
 ###########
 # ALL CALLS
