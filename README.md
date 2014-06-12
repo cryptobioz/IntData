@@ -21,13 +21,20 @@ It use the library, libimobiledevice for create de backup of iPhone, iPad or iPo
   <li>Recordings</li>
 </ul>
 <br />
-<strong>Plugins : </strong>
+<strong>Plugins : </strong><br />
 Skype : <br />
 <ul>
   <li>Calls</li>
   <li>Messages</li>
   <li>Contacts</li>
 </ul>
+<br />
+Shazam :<br />
+<ul>
+  <li>Artists</li>
+</uL>
+<br />
+<br />
 <br />
 <h3>Requires : </h3>
 <ul>
