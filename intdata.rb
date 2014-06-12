@@ -6,6 +6,8 @@ require 'plist'
 load 'plugins/shazam.rb'
 load 'plugins/skype.rb'
 load 'plugins/mumble.rb'
+load 'plugins/mango.rb'
+
 
 ###########
 # ALL CALLS
@@ -211,7 +213,11 @@ end
 
 # Variables
 
-
+# Check Backup folder
+if(system("ls Backup/") == false)
+  system("mkdir Backup")
+  puts "Directory 'Backup' is create"
+end
 
 # Using libimobiledevice for create a backup of the device
 # If user choose "backup"
@@ -233,6 +239,12 @@ if(ARGV[0] == "backup")
 else
   if(ARGV[0])
     folder = ARGV[0]
+
+  # Check if destination folder is available
+  if(system("ls Backup/#{folder}") == false)
+	puts "Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER"
+	exit(1)
+  end
   else
     puts "You have to specify the destination folder with -f FOLDER"
     exit(1)
@@ -267,8 +279,14 @@ while command != "quit"
     puts "-- SKYPE --"
     puts "skype calls    => Show Skype calls"
     puts "skype messages => Show Skype messages"
-    puts "skype contacts => Show SKype contacts"
+    puts "skype contacts => Show Skype contacts"
     puts ""
+	puts "-- MUMBLE --"
+	puts "mumble favorites => Show Mumble favorites"
+	puts ""
+	puts "-- MANGO --"
+	puts "mango servers => Show your user's settings for each servers"
+	puts ""
     puts "-- SHAZAM --"
     puts "shazam artists => Show artists who was tagged"
     puts ""
@@ -331,8 +349,14 @@ while command != "quit"
   elsif command == "mumble favorites"
     mumble_favorites(path)
 
+
+  # SHAZAM
   elsif command == "shazam artists"
     shazam_artists(path)
+  
+  # MANGOLITE
+  elsif command == "mango servers"
+  	mango_servers(path)
   else
     puts "Command not found !"
   end
