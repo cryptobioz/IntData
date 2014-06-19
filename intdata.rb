@@ -281,12 +281,12 @@ while command != "quit"
     puts "skype messages => Show Skype messages"
     puts "skype contacts => Show Skype contacts"
     puts ""
-	puts "-- MUMBLE --"
-	puts "mumble favorites => Show Mumble favorites"
-	puts ""
-	puts "-- MANGO --"
-	puts "mango servers => Show your user's settings for each servers"
-	puts ""
+	  puts "-- MUMBLE --"
+	  puts "mumble favorites => Show Mumble favorites"
+	  puts ""
+	  puts "-- MANGO --"
+	  puts "mango servers => Show your user's settings for each servers"
+	  puts ""
     puts "-- SHAZAM --"
     puts "shazam artists => Show artists who was tagged"
     puts ""
@@ -353,7 +353,7 @@ while command != "quit"
   # SHAZAM
   elsif command == "shazam artists"
     shazam_artists(path)
-  
+
   # MANGOLITE
   elsif command == "mango servers"
   	mango_servers(path)
