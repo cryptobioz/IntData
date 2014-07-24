@@ -3,6 +3,8 @@
 require 'sqlite3'
 require 'terminal-table'
 require 'plist'
+require 'prawn'
+require 'prawn/table'
 load 'plugins/shazam.rb'
 load 'plugins/skype.rb'
 load 'plugins/mumble.rb'
@@ -214,14 +216,20 @@ end
 # Variables
 
 # Check Backup folder
-if(system("ls Backup/") == false)
+if(system("ls Backup/ > /dev/null") == false)
   system("mkdir Backup")
   puts "Directory 'Backup' is create"
 end
 
+
+
+if(ARGV[0] == "-h")
+  puts "./intdata.rb DIRECTORY         => Use backup directory"
+  puts "./intdata.rb backup DIRECTORY  => Create a backup from your iDevice and use it"
+  exit(1)
 # Using libimobiledevice for create a backup of the device
 # If user choose "backup"
-if(ARGV[0] == "backup")
+elsif(ARGV[0] == "backup")
   if(ARGV[1])
     folder = ARGV[1]
   else
@@ -241,7 +249,7 @@ else
     folder = ARGV[0]
 
   # Check if destination folder is available
-  if(system("ls Backup/#{folder}") == false)
+  if(system("ls Backup/#{folder} > /dev/null") == false)
 	puts "Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER"
 	exit(1)
   end
@@ -344,8 +352,7 @@ while command != "quit"
       pseudo_skype = $stdin.gets.chomp
     end
     skype_contacts(path, pseudo_skype)
-
-  # MUMBLE
+    # MUMBLE
   elsif command == "mumble favorites"
     mumble_favorites(path)
 
