@@ -238,13 +238,8 @@ end
 
 
 if(ARGV[0] == "-h")
-<<<<<<< HEAD
   puts "ruby intdata.rb DIRECTORY         => Use backup directory"
   puts "ruby intdata.rb backup DIRECTORY  => Create a backup from your iDevice and use it"
-=======
-  puts "./intdata.rb DIRECTORY         => Use backup directory"
-  puts "./intdata.rb backup DIRECTORY  => Create a backup from your iDevice and use it"
->>>>>>> FETCH_HEAD
   exit(1)
 # Using libimobiledevice for create a backup of the device
 # If user choose "backup"
