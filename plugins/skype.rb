@@ -22,7 +22,7 @@ end
 
 ##########
 # MESSAGES
-def skype_messages(path, pseudo, pdf)
+def skype_messages(path, pseudo)
   line = ""
   begin
   	db = SQLite3::Database.new path+"mobile/Applications/com.skype.skype/Library/Application\ Support/Skype/#{pseudo}/main.db"
