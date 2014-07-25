@@ -215,7 +215,7 @@ end
 
 
 # Check gems installed
-begin 
+begin
   gem "prawn"
   gem "sqlite3"
   gem "terminal-table"
@@ -263,19 +263,19 @@ else
     folder = ARGV[0]
 
   # Check if destination folder is available
-  if(system("ls Backup/#{folder} > /dev/null") == false)
+  if(system("ls #{folder} > /dev/null") == false)
 	puts "Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER"
 	exit(1)
   end
   else
-    puts "You have to specify the destination folder with -f FOLDER"
+    puts "You have to specify the destination folder"
     exit(1)
   end
 end
 
 pseudo_skype = ""
-unback_folder = `ls Backup/#{folder}/_unback_/`.chomp
-path = "Backup/#{folder}/_unback_/#{unback_folder}/var/"
+unback_folder = `ls #{folder}/_unback_/`.chomp
+path = "#{folder}/_unback_/#{unback_folder}/var/"
 command = ""
 
 puts "Interresting Data !\n"
