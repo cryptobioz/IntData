@@ -7,7 +7,7 @@ IntData makes a backup of iOS devices and search in
 <h2>Description : </h2>
 
 IntData makes a backup of iOS devices and search in.<br />
-It use the library, libimobiledevice for create de backup of iPhone, iPad or iPod.<br />
+It use "libimobiledevice" library to create a backup of iPhone, iPad or iPod.<br />
 <br />
 <strong>Defaut commands :</strong><br />
 <ul>
