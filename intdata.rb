@@ -215,11 +215,8 @@ end
 
 
 # Check gems installed
-<<<<<<< HEAD
-begin 
-=======
+
 begin
->>>>>>> FETCH_HEAD
   gem "prawn"
   gem "sqlite3"
   gem "terminal-table"
@@ -267,15 +264,7 @@ else
     folder = ARGV[0]
 
   # Check if destination folder is available
-<<<<<<< HEAD
   if(system("ls #{folder} > /dev/null") == false)
-=======
-<<<<<<< HEAD
-  if(system("ls #{folder} > /dev/null") == false)
-=======
-  if(system("ls Backup/#{folder} > /dev/null") == false)
->>>>>>> FETCH_HEAD
->>>>>>> FETCH_HEAD
 	puts "Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER"
 	exit(1)
   end

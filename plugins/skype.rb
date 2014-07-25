@@ -27,10 +27,6 @@ def skype_messages(path, pseudo, pdf)
   begin
   	db = SQLite3::Database.new path+"mobile/Applications/com.skype.skype/Library/Application\ Support/Skype/#{pseudo}/main.db"
     db.results_as_hash = true
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> FETCH_HEAD
     stm = db.execute "SELECT author, from_dispname, body_xml, timestamp FROM Messages"
 
     print "Do you want export results on PDF (recommended) : y/n : "
@@ -54,14 +50,6 @@ def skype_messages(path, pseudo, pdf)
       stm.each do |row|  
         puts "#{row['author']} (#{row['from_dispname']}) ["+Time.at(row['timestamp'].to_i).to_s+"] ==> #{row['body_xml']}\n\n"
       end
-<<<<<<< HEAD
-=======
-=======
-    stm = db.execute "SELECT author, from_dispname, body_xml FROM Messages"
-    stm.each do |row|
-      line = line + "#{row['author']} (#{row['from_dispname']}) ==> #{row['body_xml']}\n\n"
->>>>>>> FETCH_HEAD
->>>>>>> FETCH_HEAD
     end
 
   rescue SQLite3::Exception => e
@@ -103,15 +91,7 @@ def skype_contacts(path, pseudo)
             ["Province", "#{row['province']}"],
             ["City", "#{row['city']}"],
             ["Email", "#{row['emails']}"],
-<<<<<<< HEAD
-            ["About", "#{row['about']}"]], :width=>500)
-=======
-<<<<<<< HEAD
-            ["About", "#{row['about']}"]], :width=>500)
-=======
             ["About", "#{row['about']}"]])
->>>>>>> FETCH_HEAD
->>>>>>> FETCH_HEAD
           pdf.text "\n\n"
         end
       end
