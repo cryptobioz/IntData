@@ -91,7 +91,7 @@ def skype_contacts(path, pseudo)
             ["Province", "#{row['province']}"],
             ["City", "#{row['city']}"],
             ["Email", "#{row['emails']}"],
-            ["About", "#{row['about']}"]])
+            ["About", "#{row['about']}"]], :width=>500)
           pdf.text "\n\n"
         end
       end
