@@ -32,7 +32,7 @@ Skype : <br />
 Shazam :<br />
 <ul>
   <li>Artists</li>
-</uL>
+</ul>
 <br />
 <br />
 <br />
@@ -48,9 +48,9 @@ If you have to make backup :
 <br />
 Plug your device on computer with USB cable and run this command.<br />
 <pre>
-  <code>
-    ruby intdata.rb backup DESTINATION_FOLDER
-  </code>
+<code>
+ruby intdata.rb backup DESTINATION_FOLDER
+</code>
 </pre>
 <br />
 If you want search into a folder :
