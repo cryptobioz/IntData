@@ -238,8 +238,13 @@ end
 
 
 if(ARGV[0] == "-h")
+<<<<<<< HEAD
   puts "ruby intdata.rb DIRECTORY         => Use backup directory"
   puts "ruby intdata.rb backup DIRECTORY  => Create a backup from your iDevice and use it"
+=======
+  puts "./intdata.rb DIRECTORY         => Use backup directory"
+  puts "./intdata.rb backup DIRECTORY  => Create a backup from your iDevice and use it"
+>>>>>>> FETCH_HEAD
   exit(1)
 # Using libimobiledevice for create a backup of the device
 # If user choose "backup"
@@ -263,7 +268,11 @@ else
     folder = ARGV[0]
 
   # Check if destination folder is available
+<<<<<<< HEAD
   if(system("ls #{folder} > /dev/null") == false)
+=======
+  if(system("ls Backup/#{folder} > /dev/null") == false)
+>>>>>>> FETCH_HEAD
 	puts "Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER"
 	exit(1)
   end
@@ -303,12 +312,12 @@ while command != "quit"
     puts "skype messages => Show Skype messages"
     puts "skype contacts => Show Skype contacts"
     puts ""
-	  puts "-- MUMBLE --"
-	  puts "mumble favorites => Show Mumble favorites"
-	  puts ""
-	  puts "-- MANGO --"
-	  puts "mango servers => Show your user's settings for each servers"
-	  puts ""
+    puts "-- MUMBLE --"
+    puts "mumble favorites => Show Mumble favorites"
+    puts ""
+    puts "-- MANGO --"
+    puts "mango servers => Show your user's settings for each servers"
+    puts ""
     puts "-- SHAZAM --"
     puts "shazam artists => Show artists who was tagged"
     puts ""
