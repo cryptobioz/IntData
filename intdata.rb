@@ -144,11 +144,30 @@ def all_sms(path)
     db.results_as_hash = true
     stm = db.execute "SELECT text, service, account, date FROM message"
     rows = []
-    stm.each do |row|
-      rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'])]
+
+    print "Do you want export results on PDF (recommended) : y/n : "
+    pdf = $stdin.gets.chomp
+    unless(pdf == "n" or pdf == "y")
+      puts "Answer y or n"
+      return
     end
-    table_sms = Terminal::Table.new :headings => ['Account', 'Service', 'Text', 'Date'], :rows => rows
-    puts table_sms
+
+    if(pdf == "y")
+      Prawn::Document.generate("SMS.pdf") do |pdf|
+        pdf.text "SMS\n\n\n", :size => 25
+        rows << ["Account", "Service", "Body", "Date"]
+        stm.each do |row|
+          rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'].to_i).to_s]
+        end
+        pdf.table(rows)
+      end
+    else
+      stm.each do |row|
+        rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'])]
+      end
+      table_sms = Terminal::Table.new :headings => ['Account', 'Service', 'Text', 'Date'], :rows => rows
+      puts table_sms
+    end
 
   rescue SQLite3::Exception => e
     puts "Exception occured"
@@ -271,7 +290,7 @@ elsif(ARGV[0] == "backup")
   end
   # Folder creation
   system("mkdir #{folder}")
-  if(!system("idevicebackup2 backup Backup/#{folder}"))
+  if(!system("idevicebackup2 backup #{folder}"))
     exit(1)
   else
     system("idevicebackup2 unback #{folder}")
