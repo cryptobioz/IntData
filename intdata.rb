@@ -144,30 +144,11 @@ def all_sms(path)
     db.results_as_hash = true
     stm = db.execute "SELECT text, service, account, date FROM message"
     rows = []
-
-    print "Do you want export results on PDF (recommended) : y/n : "
-    pdf = $stdin.gets.chomp
-    unless(pdf == "n" or pdf == "y")
-      puts "Answer y or n"
-      return
+    stm.each do |row|
+      rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'])]
     end
-
-    if(pdf == "y")
-      Prawn::Document.generate("SMS.pdf") do |pdf|
-        pdf.text "SMS\n\n\n", :size => 25
-        rows << ["Account", "Service", "Body", "Date"]
-        stm.each do |row|
-          rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'].to_i).to_s]
-        end
-        pdf.table(rows)
-      end
-    else
-      stm.each do |row|
-        rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'])]
-      end
-      table_sms = Terminal::Table.new :headings => ['Account', 'Service', 'Text', 'Date'], :rows => rows
-      puts table_sms
-    end
+    table_sms = Terminal::Table.new :headings => ['Account', 'Service', 'Text', 'Date'], :rows => rows
+    puts table_sms
 
   rescue SQLite3::Exception => e
     puts "Exception occured"
