@@ -1,4 +1,22 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+
+"""
+A forensic tool for fast research in the memory of your iPhone, iPad or iPod
+Copyright (C) 2014  haorks (haorks@openmailbox.org)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
 
 require 'sqlite3'
 require 'terminal-table'
@@ -248,15 +266,15 @@ elsif(ARGV[0] == "backup")
   if(ARGV[1])
     folder = ARGV[1]
   else
-    puts "You have to specify the destination folder with -f FOLDER"
+    puts "You have to specify the destination folder"
     exit(1)
   end
   # Folder creation
-  system("mkdir Backup/#{folder}")
+  system("mkdir #{folder}")
   if(!system("idevicebackup2 backup Backup/#{folder}"))
     exit(1)
   else
-    system("idevicebackup2 unback Backup/#{folder}")
+    system("idevicebackup2 unback #{folder}")
   end
 # If user want search into backup
 else
