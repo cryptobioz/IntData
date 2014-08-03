@@ -46,7 +46,9 @@ Shazam :<br />
 <h3>Run :</h3>
 If you have to make backup :
 <br />
-Plug your device on computer with USB cable and run this command.<br />
+1 - Plug your device on computer with USB cable <br />
+2 - Unlock your device if it's lock by password<br />
+3 - run command<br />
 <pre>
 <code>
 ruby intdata.rb backup DESTINATION_FOLDER
