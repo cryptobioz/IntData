@@ -57,7 +57,7 @@ load 'export_pdf.rb'
 # Check Backup folder
 if(system("ls Backup/ > /dev/null") == false)
   system("mkdir Backup")
-  puts "Directory 'Backup' is create"
+  puts "[*] Directory 'Backup' was created"
 end
 
 
@@ -72,7 +72,7 @@ elsif(ARGV[0] == "backup")
   if(ARGV[1])
     folder = ARGV[1]
   else
-    puts "You have to specify the destination folder"
+    puts "\e[31m[-] You have to specify the destination folder\e[0m"
     exit(1)
   end
   # Folder creation
@@ -89,11 +89,11 @@ else
 
   # Check if destination folder is available
   if(system("ls #{folder} > /dev/null") == false)
-	puts "Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER"
+	puts "\e[31m[-] Directory doesn't exist ! You have to do a backup of your device with : ruby intdata.rb backup DESTINATION_FOLDER\e[0m"
 	exit(1)
   end
   else
-    puts "You have to specify the destination folder"
+    puts "\e[31m[-] You have to specify the destination folder\e[0m"
     exit(1)
   end
 end
