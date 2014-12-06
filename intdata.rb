@@ -2,7 +2,7 @@
 
 """
 A forensic tool for fast research in the memory of your iPhone, iPad or iPod
-Copyright (C) 2014  haorks (haorks@openmailbox.org)
+Copyright (C) 2014  Léo Depriester (leo.depriester@exadot.fr)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,6 +18,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
+# Check gems installed
+
+begin
+  gem "prawn"
+  gem "sqlite3"
+  gem "terminal-table"
+  gem "plist"
+rescue Gem::LoadError
+  puts "You have to install gem Prawn, Sqlite3, terminal-table, Plist, Colorize."
+  exit(1)
+end
+
 require 'sqlite3'
 require 'terminal-table'
 require 'plist'
@@ -27,222 +39,16 @@ load 'plugins/shazam.rb'
 load 'plugins/skype.rb'
 load 'plugins/mumble.rb'
 load 'plugins/mango.rb'
+load 'plugins/basics.rb'
+load 'export_pdf.rb'
 
 
-###########
-# ALL CALLS
-def all_calls(path)
-  # Phone numbers
-  begin
-    db = SQLite3::Database.new path+"wireless/Library/CallHistory/call_history.db"
-    db.results_as_hash = true
-    stm = db.execute "SELECT address, date FROM call"
-    rows = []
-    stm.each do |row|
-      rows << ["#{row['address']}", Time.at(row['date'])]
-    end
-    table_calls = Terminal::Table.new :headings => ["To", "Date"], :rows => rows
-    puts table_calls
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-
-  # How many calls ?
-  begin
-    db = SQLite3::Database.new path+"wireless/Library/CallHistory/call_history.db"
-    stm = db.prepare "SELECT seq FROM sqlite_sequence WHERE name = 'call'"
-    rs = stm.execute
-    rs.each do |row|
-      puts "Number of calls : "+row.join+"\s"
-    end
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    stm.close if stm
-    db.close if db
-  end
-end
-
-
-##############
-# ALL ACCOUNTS
-def all_accounts(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Library/Accounts/Accounts3.sqlite"
-    stm = db.execute "SELECT ZACCOUNTDESCRIPTION, ZUSERNAME FROM ZACCOUNT"
-    table = Terminal::Table.new :headings => ['Description', 'User'], :rows => stm
-    puts table
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-#############
-# ADRESS BOOK
-def all_address_book(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Library/AddressBook/AddressBook.sqlitedb"
-    stm = db.execute "SELECT ABPerson.First, ABPerson.Last, ABMultiValue.value, ABPerson.Organization, ABPerson.Department, ABPerson.Birthday, ABPerson.JobTitle FROM ABPerson, ABMultiValue WHERE ABPerson.ROWID = ABMultiValue.record_id"
-    table_address_book = Terminal::Table.new :headings => ['First', 'Last', 'Contact', 'Organization', 'Department', 'Birthday', 'JobTitle'], :rows => stm
-    puts table_address_book
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-##########
-# PICTURES
-def all_pictures(path)
-    system("open "+path+"mobile/Media/DCIM/100APPLE/ &")
-end
-
-
-
-#############
-# META DATA MAILS
-def all_md_mails(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Library/Mail/Recents"
-    db.results_as_hash = true
-    stm = db.execute "SELECT display_name, address, sending_address, last_date FROM recents"
-    rows = []
-    stm.each do |row|
-      rows << ["#{row['display_name']}", "#{row['address']}", "#{row['sending_address']}", Time.at(row['last_date']/10)]
-    end
-    table_md_mails = Terminal::Table.new :headings => ['Receiver', 'Address of Receiver', 'Address of sender', 'Date'], :rows => rows
-    puts table_md_mails
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-
-
-######
-# SMS
-def all_sms(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Library/SMS/sms.db"
-    db.results_as_hash = true
-    stm = db.execute "SELECT text, service, account, date FROM message"
-    rows = []
-    stm.each do |row|
-      rows << ["#{row['account']}", "#{row['service']}", "#{row['text']}", Time.at(row['date'])]
-    end
-    table_sms = Terminal::Table.new :headings => ['Account', 'Service', 'Text', 'Date'], :rows => rows
-    puts table_sms
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-#######
-# NOTES
-def all_notes(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Library/Notes/notes.sqlite"
-    db.results_as_hash = true
-    stm = db.execute "SELECT ZCONTENT FROM ZNOTEBODY"
-    stm.each do |row|
-      puts "\n\n\n"
-      puts row
-    end
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-
-###########
-# RECORDING
-def all_recordings(path)
-    system("open "+path+"mobile/Media/Recordings/")
-end
-
-####################
-# SAFARI - BOOKMARKS
-def all_safari_bookmarks(path)
-  begin
-    db = SQLite3::Database.new path+"mobile/Library/Safari/Bookmarks.db"
-    stm = db.execute "SELECT title, url FROM bookmarks"
-    table_safari_bookmarks = Terminal::Table.new :headings => ['Title', 'URL'], :rows => stm
-    puts table_safari_bookmarks
-
-  rescue SQLite3::Exception => e
-    puts "Exception occured"
-    puts e
-  ensure
-    db.close if db
-  end
-end
-
-
-##################
-# SAFARI - HISTORY
-def all_safari_history(path)
-  file_safari_history = File.open(path+"mobile/Library/Safari/SuspendState.plist", "r")
-  file_safari_history.each_line{ |line|
-    url = /<string>http(.*)</.match(line)
-    puts url
-  }
-
-end
-
-
-
-
-
-
-################################
-#
-##################################
-
-#######
-#
 
 
 
 ########
 # MAIN #
 ########
-
-
-# Check gems installed
-
-begin
-  gem "prawn"
-  gem "sqlite3"
-  gem "terminal-table"
-  gem "plist"
-rescue Gem::LoadError
-  puts "You have to install gem Prawn, Sqlite3, terminal-table, Plist."
-  exit(1)
-end
 
 
 
@@ -297,7 +103,7 @@ unback_folder = `ls #{folder}/_unback_/`.chomp
 path = "#{folder}/_unback_/#{unback_folder}/var/"
 command = ""
 
-puts "Interresting Data !\n"
+puts "\e[0mIntData !\n"
 
 while command != "quit"
   print "> "
@@ -331,6 +137,9 @@ while command != "quit"
     puts "-- SHAZAM --"
     puts "shazam artists => Show artists who was tagged"
     puts ""
+    puts "-- Export data --"
+    puts "export all => Export all data to PDF files"
+    puts ""
   elsif command == "quit"
     puts "Good Bye !"
   elsif command == "all"
@@ -345,58 +154,59 @@ while command != "quit"
     puts "\nSMS"
     all_sms(path)
   elsif command == "calls"
-    all_calls(path)
+    all_calls(path, 0)
   elsif command == "accounts"
-    all_accounts(path)
+    all_accounts(path, 0)
   elsif command == "addressbook"
-    all_address_book(path)
+    all_address_book(path, 0)
   elsif command == "pictures"
-    all_pictures(path)
+    all_pictures(path, 0)
   elsif command == "md_mails"
-    all_md_mails(path)
+    all_md_mails(path, 0)
   elsif command == "sms"
-    all_sms(path)
+    all_sms(path, 0)
   elsif command == "notes"
-    all_notes(path)
+    all_notes(path, 0)
   elsif command == "recordings"
-    all_recordings(path)
+    all_recordings(path, 0)
   elsif command == "safari bookmarks"
-    all_safari_bookmarks(path)
+    all_safari_bookmarks(path, 0)
   elsif command == "safari history"
-    all_safari_history(path)
+    all_safari_history(path, 0)
   # SKYPE
   elsif command == "skype calls"
     if pseudo_skype == ""
       print "Enter a skype pseudo : "
       pseudo_skype = $stdin.gets.chomp
     end
-    skype_calls(path, pseudo_skype)
+    skype_calls(path, pseudo_skype, 0)
 
   elsif command == "skype messages"
     if pseudo_skype == ""
       print "Enter a skype pseudo : "
       pseudo_skype = $stdin.gets.chomp
     end
-    skype_messages(path, pseudo_skype)
+    skype_messages(path, pseudo_skype, 0)
 
   elsif command == "skype contacts"
     if pseudo_skype == ""
       print "Enter a skype pseudo : "
       pseudo_skype = $stdin.gets.chomp
     end
-    skype_contacts(path, pseudo_skype)
+    skype_contacts(path, pseudo_skype, 0)
     # MUMBLE
   elsif command == "mumble favorites"
-    mumble_favorites(path)
-
-
+    mumble_favorites(path, 0)
   # SHAZAM
   elsif command == "shazam artists"
-    shazam_artists(path)
+    shazam_artists(path, 0)
 
   # MANGOLITE
   elsif command == "mango servers"
-  	mango_servers(path)
+  	mango_servers(path, 0)
+
+  elsif command == "export all"
+    export_pdf(path, "all")
   else
     puts "Command not found !"
   end
