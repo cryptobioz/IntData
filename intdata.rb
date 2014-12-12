@@ -32,7 +32,7 @@ end
 
 require 'sqlite3'
 require 'terminal-table'
-require 'plist'
+require 'CFPropertyList'
 require 'prawn'
 require 'prawn/table'
 load 'plugins/shazam.rb'
