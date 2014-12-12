@@ -1,3 +1,4 @@
+# coding: UTF-8
 ###########
 # ALL CALLS
 def all_calls(path, export)
@@ -291,28 +292,53 @@ def all_safari_bookmarks(path, export)
     db.close if db
   end
 end
-'''
+
 ##################
 # SAFARI - HISTORY
 def all_safari_history(path, export)
-  file_safari_history = File.open(path+"mobile/Library/Safari/SuspendState.plist", "r")
-  # EXPORT ?
-  if(export == 1)
-    Prawn::Document.generate("Exports/Basics/Safari/History.pdf") do |pdf|
-      pdf.text "History\n\n\n", :size => 25
-      rows = [["URL"]]
-      
-      puts file_safari_history
+  begin
+    plist = CFPropertyList::List.new(:file => path+"mobile/Library/Safari/SuspendState.plist")
+    data = CFPropertyList.native_types(plist.value)
+    # EXPORT ?
+    if(export == 1)
+      file = File.open('Exports/Basics/Safari/History.html', 'w')
+      file.puts('<!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset="UTF-8" />
+        </head>
+        <body>
+        <h1>Safari History</h1>')
 
-      pdf.table(rows)
-      pdf.text ""
+      for item in data["SafariStateDocuments"]
+        if item != ""
+          file.puts "<br />
+          <br />"
+          for item_back in item["SafariStateDocumentBackForwardList"]["entries"]
+            file.puts "<a href='"+item_back[""]+"'>"+item_back['title']+"</a><br />"
+          end
+          file.puts "<a href='"+item["SafariStateDocumentURL"]+"'>"+item["SafariStateDocumentTitle"]+"</a><br />"
+
+        end
+      end
+
+
+      file.puts("</body></html>")
+      file.close
+      puts "\e[32m[+] Safari history export done\e[0m"
+    else
+      for item in data["SafariStateDocuments"]
+        if item != ""
+          for item_back in item["SafariStateDocumentBackForwardList"]["entries"]
+            puts item_back['title']+"\n"
+          end
+          puts item["SafariStateDocumentTitle"]+"\n\n"
+        end
+      end
     end
-  else
-    file_safari_history.each_line{ |line|
-      url = /<string>http(.*)</.match(line)
-      puts url
-    }
+  rescue
+    #puts "Exception occured"
+    #puts e
+    puts "\e[31m[-] Can't access to Safari history database.\e[0m"
   end
-
 end
-''' 

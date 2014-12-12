@@ -18,6 +18,7 @@ def export_pdf(path, type)
 		puts "\e[32m[+] Recordings export done\e[0m"
 		system("mkdir Exports/Basics/Safari/ > /dev/null 2>&1")
 		all_safari_bookmarks(path, 1)
+		all_safari_history(path, 1)
 
 		# Skype
 		if File.directory?("#{path}mobile/Applications/com.skype.skype")
